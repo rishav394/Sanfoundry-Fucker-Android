@@ -3,6 +3,7 @@ package com.rishav.sanfoundryfucker;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,10 +31,39 @@ public class MainActivity extends AppCompatActivity {
     Elements elements;
 
     @Override
+    public void finish() {
+        super.finish();
+        onLeaveThisActivity();
+    }
+
+    protected void onLeaveThisActivity() {
+        // Dont want an animation here
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+        onStartNewActivity();
+    }
+
+    @Override
+    public void startActivity(Intent intent, Bundle options) {
+        super.startActivity(intent, options);
+        onStartNewActivity();
+    }
+
+    protected void onStartNewActivity() {
+        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setLogo(R.mipmap.ic_launcher_foreground);
+        actionBar.setDisplayUseLogoEnabled(true);
         new GetCourse().execute();
         listView = findViewById(R.id.list);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
