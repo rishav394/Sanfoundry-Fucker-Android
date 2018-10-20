@@ -4,9 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +21,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class SubjectActivity extends AppCompatActivity {
 
@@ -62,7 +63,7 @@ public class SubjectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(actionBar).setDisplayShowHomeEnabled(true);
         actionBar.setLogo(R.mipmap.ic_launcher_foreground);
         actionBar.setDisplayUseLogoEnabled(true);
         url = getIntent().getStringExtra("URL");
@@ -82,6 +83,7 @@ public class SubjectActivity extends AppCompatActivity {
         });
     }
 
+
     class CustomAdaptor extends BaseAdapter {
 
         @Override
@@ -99,7 +101,7 @@ public class SubjectActivity extends AppCompatActivity {
             return 0;
         }
 
-        @SuppressLint("ViewHolder")
+        @SuppressLint({"ViewHolder", "InflateParams"})
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = getLayoutInflater().inflate(R.layout.custom_layout, null);
@@ -109,6 +111,7 @@ public class SubjectActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class GetSubject extends AsyncTask<Void,Void,Void> {
 
         @Override
@@ -137,7 +140,7 @@ public class SubjectActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            elements = myDoc.select("tr > td > li > a");
+            elements = Objects.requireNonNull(myDoc).select("tr > td > li > a");
             my = new String[elements.size()];
             for (int i = 0; i <  elements.size(); i++){
                 my[i] = elements.get(i).text();

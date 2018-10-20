@@ -21,6 +21,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class TopicActivity extends AppCompatActivity {
 
@@ -62,7 +63,7 @@ public class TopicActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(actionBar).setDisplayShowHomeEnabled(true);
         actionBar.setLogo(R.mipmap.ic_launcher_foreground);
         actionBar.setDisplayUseLogoEnabled(true);
         url = getIntent().getStringExtra("URL");
@@ -99,7 +100,7 @@ public class TopicActivity extends AppCompatActivity {
             return 0;
         }
 
-        @SuppressLint("ViewHolder")
+        @SuppressLint({"ViewHolder", "InflateParams"})
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = getLayoutInflater().inflate(R.layout.custom_layout, null);
@@ -109,6 +110,7 @@ public class TopicActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class GetTopic extends AsyncTask<Void,Void,Void> {
 
         @Override
@@ -137,7 +139,7 @@ public class TopicActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            elements = myDoc.select("div > article > div > table > tbody > tr > td > a");
+            elements = Objects.requireNonNull(myDoc).select("div > article > div > table > tbody > tr > td > a");
 
             my = new String[elements.size()];
             for (int i = 0; i <  elements.size(); i++){
