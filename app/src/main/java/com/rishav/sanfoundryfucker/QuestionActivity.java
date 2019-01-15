@@ -139,20 +139,26 @@ public class QuestionActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            elements = Objects.requireNonNull(myDoc).select("div > p");
-            Elements ans = myDoc.select("div > div > div > article > div > div.collapseomatic_content");
-            my = new String[elements.size() - 5];
-            for (int i = 1; i <  elements.size() - 4; i++){
-                String temp = (elements.get(i).text());
-                temp = "\n" + temp;
-                temp = temp.replaceAll("a\\)","\na)");
-                temp = temp.replaceAll("b\\)","\nb)");
-                temp = temp.replaceAll("c\\)","\nc)");
-                temp = temp.replaceAll("d\\)","\nd)");
-                temp = temp.replaceAll("View Answer",
-                        "\n\n"+ans.get(i-1).text().replaceAll("Explanation:", "\nExplanation:"));
-                my[i-1] = temp;
+            int i = 1;
+            try {
+                elements = Objects.requireNonNull(myDoc).select("div > p");
+                Elements ans = myDoc.select("div > div > div > article > div > div.collapseomatic_content");
+                my = new String[elements.size() - 5];
+                for (i = 1; i < elements.size() - 4; i++) {
+                    String temp = (elements.get(i).text());
+                    temp = "\n" + temp;
+                    temp = temp.replaceAll("a\\)", "\na)");
+                    temp = temp.replaceAll("b\\)", "\nb)");
+                    temp = temp.replaceAll("c\\)", "\nc)");
+                    temp = temp.replaceAll("d\\)", "\nd)");
+                    temp = temp.replaceAll("View Answer",
+                            "\n\n" + ans.get(i - 1).text().replaceAll("Explanation:", "\nExplanation:"));
+                    my[i - 1] = temp;
+                }
+            }
+            catch (Exception e){
+                my[i-1] = "Code Found in this section. Will develop it ASAP.";
+                e.printStackTrace();
             }
             return null;
         }
